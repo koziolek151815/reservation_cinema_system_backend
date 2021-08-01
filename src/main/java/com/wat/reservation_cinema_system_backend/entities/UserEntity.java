@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 
@@ -44,6 +45,8 @@ public class UserEntity {
                     @JoinColumn(name = "ROLE_ID")})
     private Set<RoleEntity> roles;
 
+    @OneToMany(mappedBy="user")
+    private List<ReservationEntity> reservations = new ArrayList<>();
 
     @PrePersist
     void createdAt() {
