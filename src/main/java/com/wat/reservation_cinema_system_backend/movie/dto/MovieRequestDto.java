@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Builder
 @Data
@@ -13,4 +14,5 @@ public class MovieRequestDto {
     String title;
     String director;
     String description;
+    MultipartFile postPhoto;
 }
