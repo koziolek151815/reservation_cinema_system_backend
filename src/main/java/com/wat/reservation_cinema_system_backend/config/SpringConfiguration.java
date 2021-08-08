@@ -1,6 +1,7 @@
 package com.wat.reservation_cinema_system_backend.config;
 
 
+import com.wat.reservation_cinema_system_backend.movie.MovieFactory;
 import com.wat.reservation_cinema_system_backend.user.UserFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,5 +18,8 @@ public class SpringConfiguration {
         return new UserFactory(new BCryptPasswordEncoder());
     }
 
-
+    @Bean
+    public MovieFactory movieFactory() {
+        return new MovieFactory();
+    }
 }

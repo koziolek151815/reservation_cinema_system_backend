@@ -1,21 +1,24 @@
 package com.wat.reservation_cinema_system_backend.entities;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
-
+@Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "movies")
 public class MovieEntity {
     @Id
+    @GeneratedValue
     private Long movieId;
     private String title;
     private String director;

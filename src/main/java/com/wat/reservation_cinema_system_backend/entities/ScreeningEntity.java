@@ -15,6 +15,7 @@ import java.util.List;
 @Entity(name = "screenings")
 public class ScreeningEntity {
     @Id
+    @GeneratedValue
     private Long screeningId;
     @ManyToOne
     @JoinColumn(name="movie_id")

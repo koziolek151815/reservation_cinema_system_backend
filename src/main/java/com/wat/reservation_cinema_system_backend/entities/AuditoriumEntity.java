@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.List;
 @Entity(name = "auditoriums")
 public class AuditoriumEntity {
     @Id
+    @GeneratedValue
     private Long auditoriumId;
     private String name;
     private Integer numberOfSeats;

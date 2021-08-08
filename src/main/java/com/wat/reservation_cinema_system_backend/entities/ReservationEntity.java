@@ -14,6 +14,7 @@ import java.util.List;
 @Entity(name = "reservations")
 public class ReservationEntity {
     @Id
+    @GeneratedValue
     private Long Id;
     @ManyToOne
     @JoinColumn(name="user_id")

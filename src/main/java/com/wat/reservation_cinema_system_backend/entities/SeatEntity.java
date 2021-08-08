@@ -15,6 +15,7 @@ import java.util.List;
 @Entity(name = "seats")
 public class SeatEntity {
     @Id
+    @GeneratedValue
     private Long seatId;
     private Integer rowofSeat;
     private Integer numberofSeat;
