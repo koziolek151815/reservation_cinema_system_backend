@@ -1,15 +1,15 @@
 package com.wat.reservation_cinema_system_backend.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-
-@Data
+@Builder
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "screenings")
@@ -23,6 +23,8 @@ public class ScreeningEntity {
     @ManyToOne
     @JoinColumn(name="auditorium_id")
     private AuditoriumEntity auditorium;
+    private LocalDateTime startScreening;
+    private LocalDateTime endScreening;
     @OneToMany(mappedBy="screening")
     private List<SeatReservedEntity> seatsReserved=new ArrayList<>();
     @OneToMany(mappedBy="screening")

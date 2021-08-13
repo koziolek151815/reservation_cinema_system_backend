@@ -1,9 +1,14 @@
 package com.wat.reservation_cinema_system_backend;
 
 
+import com.wat.reservation_cinema_system_backend.auditorium.AuditoriumRepository;
+import com.wat.reservation_cinema_system_backend.entities.AuditoriumEntity;
 import com.wat.reservation_cinema_system_backend.entities.RoleEntity;
+import com.wat.reservation_cinema_system_backend.entities.SeatEntity;
 import com.wat.reservation_cinema_system_backend.entities.UserEntity;
 import com.wat.reservation_cinema_system_backend.role.RoleService;
+import com.wat.reservation_cinema_system_backend.screening.ScreeningRepository;
+import com.wat.reservation_cinema_system_backend.seat.SeatRepository;
 import com.wat.reservation_cinema_system_backend.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -24,6 +29,9 @@ public class SampleDatabaseLoader implements CommandLineRunner {
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final BCryptPasswordEncoder bcryptEncoder;
+    private final SeatRepository seatRepository;
+    private final ScreeningRepository screeningRepository;
+    private final AuditoriumRepository auditoriumRepository;
 
     public void run(String... strings) {
 
@@ -40,9 +48,10 @@ public class SampleDatabaseLoader implements CommandLineRunner {
         testUser.setRoles(roleEntitySet);
 
         userRepository.save(testUser);
+
     }
 
-    private UserEntity getTestUser(){
+    private UserEntity getTestUser() {
         return userRepository.findByEmail("test@test.com").orElse(
                 UserEntity.builder()
                         .username("test")
@@ -53,6 +62,8 @@ public class SampleDatabaseLoader implements CommandLineRunner {
                         .build()
         );
     }
+
+
 
 
 }

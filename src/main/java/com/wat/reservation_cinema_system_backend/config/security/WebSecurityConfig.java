@@ -31,11 +31,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/h2/**",
             "/content/**",
             "/users/usernew",
-            "/swagger-resources/**",
-            "/swagger-ui/**",
             "/v2/api-docs",
-            "/chat/**",
-            "/ads/**"
+            "/configuration/ui",
+            "/swagger-resources/**",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            "/api/**",
+            "/reservation_cinema_system_backend/**"
     };
 
     @Resource(name = "userService")

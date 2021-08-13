@@ -1,8 +1,6 @@
 package com.wat.reservation_cinema_system_backend.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,8 +9,9 @@ import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
-
-@Data
+@Builder
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "auditoriums")
