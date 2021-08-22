@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -48,5 +49,8 @@ public class ScreeningService {
         ScreeningEntity savedScreening = screeningRepository.save(screeningFactory
                 .screeningRequestDtoToEntity(screeningRequestDto, movieEntity, auditoriumEntity));
         return screeningFactory.entityToScreeningResponseDto(savedScreening);
+    }
+    public List<ScreeningResponseDto> getScreenings(){
+        return screeningRepository.findAll().stream().map(screeningFactory::entityToScreeningResponseDto).collect(Collectors.toList());
     }
 }
