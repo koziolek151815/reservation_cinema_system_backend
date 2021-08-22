@@ -26,6 +26,6 @@ public class SpringConfiguration {
 
     @Bean
     public ScreeningFactory screeningFactory() {
-        return new ScreeningFactory();
+        return new ScreeningFactory(movieFactory());
     }
 }
