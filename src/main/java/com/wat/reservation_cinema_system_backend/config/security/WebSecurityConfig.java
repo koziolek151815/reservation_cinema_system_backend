@@ -38,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/swagger-ui.html",
             "/webjars/**",
             "/api/**",
-            "/reservation_cinema_system_backend/**"
+            "/**"
     };
 
     @Resource(name = "userService")

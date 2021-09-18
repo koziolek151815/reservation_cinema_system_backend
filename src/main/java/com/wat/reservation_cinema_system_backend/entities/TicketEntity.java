@@ -10,8 +10,8 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "reserved_seats")
-public class SeatReservedEntity {
+@Entity(name = "tickets")
+public class TicketEntity {
     @Id
     @GeneratedValue
     private Long seatReservedId;
@@ -24,4 +24,7 @@ public class SeatReservedEntity {
     @ManyToOne
     @JoinColumn(name="screening_id")
     private ScreeningEntity screening;
+    @ManyToOne
+    @JoinColumn(name="ticket_type_id")
+    private TicketTypeEntity ticketTypeEntity;
 }

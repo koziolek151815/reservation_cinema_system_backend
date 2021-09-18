@@ -26,7 +26,7 @@ public class ScreeningEntity {
     private LocalDateTime startScreening;
     private LocalDateTime endScreening;
     @OneToMany(mappedBy="screening")
-    private List<SeatReservedEntity> seatsReserved=new ArrayList<>();
+    private List<TicketEntity> tickets=new ArrayList<>();
     @OneToMany(mappedBy="screening")
     private List<ReservationEntity> reservations=new ArrayList<>();
 }

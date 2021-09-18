@@ -20,7 +20,7 @@ public class ReservationEntity {
     @JoinColumn(name="user_id")
     private UserEntity user;
     @OneToMany(mappedBy="reservation")
-    private List<SeatReservedEntity> seatsReserved= new ArrayList<>();
+    private List<TicketEntity> tickets= new ArrayList<>();
     @ManyToOne
     @JoinColumn(name="screening_id")
     private ScreeningEntity screening;

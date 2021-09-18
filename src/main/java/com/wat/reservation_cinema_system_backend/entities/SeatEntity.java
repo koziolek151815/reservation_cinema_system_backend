@@ -18,11 +18,11 @@ public class SeatEntity {
     @Id
     @GeneratedValue
     private Long seatId;
-    private Integer rowofSeat;
-    private Integer numberofSeat;
+    private Integer rowSeat;
+    private Integer numberSeat;
     @ManyToOne
     @JoinColumn(name="auditorium_id")
     private AuditoriumEntity auditorium;
     @OneToMany(mappedBy="seat")
-    private List<SeatReservedEntity> seatsReserved= new ArrayList<>();
+    private List<TicketEntity> tickets= new ArrayList<>();
 }
