@@ -2,10 +2,13 @@ package com.wat.reservation_cinema_system_backend.screening;
 
 import com.wat.reservation_cinema_system_backend.screening.dto.ScreeningRequestDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
@@ -20,8 +23,8 @@ public class ScreeningController {
                 .body(screeningService.addScreening(screeningRequestDto));
     }
     @GetMapping
-    public ResponseEntity<?> getScreenings(){
+    public ResponseEntity<?> getMoviesScreeningsForDay(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate date){
         return ResponseEntity.status(HttpStatus.OK)
-                .body(screeningService.getScreenings());
+                .body(screeningService.getMoviesScreeningsForDay(date));
     }
 }
