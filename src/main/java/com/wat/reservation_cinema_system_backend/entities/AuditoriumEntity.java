@@ -21,6 +21,8 @@ public class AuditoriumEntity {
     private Long auditoriumId;
     private String name;
     private Integer numberOfSeats;
+    private Integer rows;
+    private Integer numbers;
     @OneToMany(mappedBy="auditorium")
     private List<ScreeningEntity> screenings= new ArrayList<>();
     @OneToMany(mappedBy="auditorium")
