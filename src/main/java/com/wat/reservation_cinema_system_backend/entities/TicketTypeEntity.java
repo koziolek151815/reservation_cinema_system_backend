@@ -16,6 +16,6 @@ public class TicketTypeEntity {
     @Id
     @GeneratedValue
     private Long ticketTypeId;
-    private Long price;
+    private Double price;
     private String name;
 }
