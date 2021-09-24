@@ -27,4 +27,6 @@ public class TicketEntity {
     @ManyToOne
     @JoinColumn(name="ticket_type_id")
     private TicketTypeEntity ticketTypeEntity;
+    private Boolean made;
+    private Boolean paid;
 }

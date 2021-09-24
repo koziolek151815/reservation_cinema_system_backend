@@ -19,6 +19,8 @@ public class ReservationEntity {
     @ManyToOne
     @JoinColumn(name="user_id")
     private UserEntity user;
+    private Boolean made;
+    private Boolean paid;
     @OneToMany(mappedBy="reservation")
     private List<TicketEntity> tickets= new ArrayList<>();
     @ManyToOne
