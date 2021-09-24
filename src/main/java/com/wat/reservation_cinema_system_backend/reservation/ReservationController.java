@@ -8,12 +8,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/reservations")
 public class ReservationController {
+    private final ReservationService reservationService;
+
     @PostMapping
-    public int getAllReservationsForUser(){
+    public int getAllReservationsForUser() {
         return 3;
     }
+
     @GetMapping
-    public int addReservation(){
-        return 2;
+    public ReservationResponseDto getCurrentReservationOrCreate() {
+        return reservationService.getCurrentReservationOrCreate();
     }
 }
