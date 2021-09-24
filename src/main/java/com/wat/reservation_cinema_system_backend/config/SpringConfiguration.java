@@ -1,6 +1,7 @@
 package com.wat.reservation_cinema_system_backend.config;
 
 
+import com.wat.reservation_cinema_system_backend.auditorium.AuditoriumFactory;
 import com.wat.reservation_cinema_system_backend.movie.MovieFactory;
 import com.wat.reservation_cinema_system_backend.screening.ScreeningFactory;
 import com.wat.reservation_cinema_system_backend.user.UserFactory;
@@ -27,5 +28,9 @@ public class SpringConfiguration {
     @Bean
     public ScreeningFactory screeningFactory() {
         return new ScreeningFactory(movieFactory());
+    }
+    @Bean
+    public AuditoriumFactory auditoriumFactory(){
+        return new AuditoriumFactory();
     }
 }
