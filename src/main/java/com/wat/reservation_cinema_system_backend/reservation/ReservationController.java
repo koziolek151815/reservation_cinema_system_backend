@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*;
 public class ReservationController {
     private final ReservationService reservationService;
 
-    @PostMapping
-    public int getAllReservationsForUser() {
-        return 3;
-    }
-
     @GetMapping
     public ReservationResponseDto getCurrentReservationOrCreate() {
         return reservationService.getCurrentReservationOrCreate();
+    }
+
+    @PostMapping
+    public void makeReservation() {
+        reservationService.makeReservation();
     }
 }

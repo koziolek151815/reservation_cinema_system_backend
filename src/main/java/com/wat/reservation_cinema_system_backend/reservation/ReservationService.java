@@ -1,12 +1,16 @@
 package com.wat.reservation_cinema_system_backend.reservation;
 
 import com.wat.reservation_cinema_system_backend.entities.ReservationEntity;
+import com.wat.reservation_cinema_system_backend.entities.TicketEntity;
 import com.wat.reservation_cinema_system_backend.entities.UserEntity;
+import com.wat.reservation_cinema_system_backend.ticket.TicketRepository;
+import com.wat.reservation_cinema_system_backend.ticket.TicketService;
 import com.wat.reservation_cinema_system_backend.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -14,6 +18,7 @@ import java.util.Optional;
 public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final UserService userService;
+    private final TicketRepository ticketRepository;
 
     public ReservationResponseDto getCurrentReservationOrCreate() {
         UserEntity currentUser = userService.getCurrentUser();
@@ -30,5 +35,19 @@ public class ReservationService {
             return ReservationResponseDto.builder().reservationId(reservationEntity.getId()).build();
         }
         return ReservationResponseDto.builder().reservationId(currentReservation.get().getId()).build();
+    }
+
+    public void makeReservation() {
+        UserEntity currentUser = userService.getCurrentUser();
+        ReservationEntity reservationToProcess = currentUser.getReservations().stream().filter(
+                reservation -> !reservation.getMade()).findFirst().orElseThrow(() -> new RuntimeException("Reservation not found"));
+        reservationToProcess.setMade(true);
+        reservationRepository.save(reservationToProcess);
+
+        List<TicketEntity> ticketEntities = reservationToProcess.getTickets();
+        ticketEntities.forEach(ticketEntity -> {
+            ticketEntity.setMade(true);
+            ticketRepository.save(ticketEntity);
+        });
     }
 }
