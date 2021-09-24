@@ -17,7 +17,7 @@ public class ReservationService {
 
     public ReservationResponseDto getCurrentReservationOrCreate() {
         UserEntity currentUser = userService.getCurrentUser();
-        Optional<ReservationEntity> currentReservation = reservationRepository.findByUserEqualsAndAndMadeFalse(currentUser);
+        Optional<ReservationEntity> currentReservation = reservationRepository.findByUserEqualsAndMadeFalse(currentUser);
         if (!currentReservation.isPresent()) {
             ReservationEntity reservationEntity = ReservationEntity.builder()
                     .made(false)
