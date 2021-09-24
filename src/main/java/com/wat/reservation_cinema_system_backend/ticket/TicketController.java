@@ -15,8 +15,8 @@ public class TicketController {
     public List<TicketResponseDto> getAllTicketsForScreening(@PathVariable Long screeningId){
         return ticketService.getAllTicketsForScreening(screeningId);
     }
-    @PostMapping
-    public int addTicketToReservation(){
-        return 4;
+    @PostMapping("/{screeningId}")
+    public void addTicketToReservation(@PathVariable Long screeningId, @RequestBody TicketRequestDto ticketRequestDto){
+        ticketService.addTicketToReservation(screeningId,ticketRequestDto);
     }
 }
