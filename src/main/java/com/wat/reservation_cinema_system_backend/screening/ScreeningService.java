@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,6 +66,11 @@ public class ScreeningService {
             moviesScreeningsDayDtoList.add(MovieScreeningsDayDto.builder()
                     .movie(movieResponseDto)
                     .screenings(screeningsMovieDay).build());
+        });
+        moviesScreeningsDayDtoList.forEach(movieScreening -> {
+            List<ScreeningResponseDto> screenings = movieScreening.getScreenings().stream().
+                    sorted(Comparator.comparing(ScreeningResponseDto::getStartScreening)).collect(Collectors.toList());
+            movieScreening.setScreenings(screenings);
         });
         return moviesScreeningsDayDtoList;
     }
