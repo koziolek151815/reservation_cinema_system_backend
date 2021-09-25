@@ -27,4 +27,9 @@ public class ScreeningController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(screeningService.getMoviesScreeningsForDay(date));
     }
+    @GetMapping("/{screeningId}")
+    public ResponseEntity<?> getScreeningWithAuditoriumById(@PathVariable Long screeningId){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(screeningService.getScreeningWithAuditoriumById(screeningId));
+    }
 }

@@ -1,5 +1,6 @@
 package com.wat.reservation_cinema_system_backend.screening;
 
+import com.wat.reservation_cinema_system_backend.auditorium.AuditoriumFactory;
 import com.wat.reservation_cinema_system_backend.auditorium.AuditoriumRepository;
 import com.wat.reservation_cinema_system_backend.entities.AuditoriumEntity;
 import com.wat.reservation_cinema_system_backend.entities.MovieEntity;
@@ -10,6 +11,7 @@ import com.wat.reservation_cinema_system_backend.movie.dto.MovieResponseDto;
 import com.wat.reservation_cinema_system_backend.screening.dto.MovieScreeningsDayDto;
 import com.wat.reservation_cinema_system_backend.screening.dto.ScreeningRequestDto;
 import com.wat.reservation_cinema_system_backend.screening.dto.ScreeningResponseDto;
+import com.wat.reservation_cinema_system_backend.screening.dto.ScreeningWithAuditoriumResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,7 @@ public class ScreeningService {
     private final AuditoriumRepository auditoriumRepository;
     private final ScreeningFactory screeningFactory;
     private final MovieFactory movieFactory;
+    private final AuditoriumFactory auditoriumFactory;
 
     public boolean isOverlapping(LocalDateTime start1, LocalDateTime end1, LocalDateTime start2, LocalDateTime end2) {
         return start1.isBefore(end2) && start2.isBefore(end1);
@@ -73,6 +76,16 @@ public class ScreeningService {
             movieScreening.setScreenings(screenings);
         });
         return moviesScreeningsDayDtoList;
+    }
+
+    public ScreeningWithAuditoriumResponseDto getScreeningWithAuditoriumById(Long screeningId){
+        ScreeningEntity screeningEntity = screeningRepository.findById(screeningId)
+                .orElseThrow(() -> new RuntimeException("Screening not found"));
+        AuditoriumEntity auditoriumEntity = screeningEntity.getAuditorium();
+        return ScreeningWithAuditoriumResponseDto.builder()
+                .auditorium(auditoriumFactory.entityToAuditoriumResponseDto(auditoriumEntity))
+                .screening(screeningFactory.entityToScreeningResponseDto(screeningEntity))
+                .build();
     }
 
     private boolean isSameDay(ScreeningEntity s, LocalDate date){
