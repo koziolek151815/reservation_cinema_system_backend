@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Base64;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -34,5 +36,8 @@ public class MovieService {
         if(relatedImage==null)return null;
 
         return Base64.getEncoder().encode(relatedImage.getBytes());
+    }
+    public List<MovieResponseDto> getAllMovies(){
+        return movieRepository.findAll().stream().map(movieFactory::entityToMovieResponseDto).collect(Collectors.toList());
     }
 }
