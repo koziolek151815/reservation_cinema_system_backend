@@ -17,6 +17,7 @@ import java.util.List;
 @RequestMapping("/movies")
 public class MovieController {
     private final MovieService movieService;
+    private final MovieRepository movieRepository;
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> addMovie(@ModelAttribute MovieRequestDto movieRequestDto) throws IOException {
@@ -33,5 +34,9 @@ public class MovieController {
     @GetMapping
     public List<MovieResponseDto> getAllMovies(){
         return movieService.getAllMovies();
+    }
+    @DeleteMapping("/{id}")
+    public void deleteMovie(@PathVariable Long id){
+        movieRepository.deleteById(id);
     }
 }
