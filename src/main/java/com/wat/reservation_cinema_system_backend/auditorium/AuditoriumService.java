@@ -8,6 +8,9 @@ import com.wat.reservation_cinema_system_backend.seat.SeatRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Service
 public class AuditoriumService {
@@ -28,5 +31,9 @@ public class AuditoriumService {
             }
         }
         return auditoriumFactory.entityToAuditoriumResponseDto(auditoriumEntity);
+    }
+
+    public List<AuditoriumResponseDto> getAllAuditoriums(){
+        return auditoriumRepository.findAll().stream().map(auditoriumFactory::entityToAuditoriumResponseDto).collect(Collectors.toList());
     }
 }

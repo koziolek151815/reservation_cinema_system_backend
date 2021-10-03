@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 @RestController
@@ -17,5 +19,11 @@ public class AuditoriumController {
     @PreAuthorize("hasRole('admin')")
     public AuditoriumResponseDto addAuditoriumWithSeats(@RequestBody AuditoriumRequestDto auditoriumRequestDto) {
         return auditoriumService.addAuditoriumWithSeats(auditoriumRequestDto);
+    }
+
+    @GetMapping
+    @PreAuthorize("hasRole('admin')")
+    public List<AuditoriumResponseDto> getAllAuditoriums(){
+        return auditoriumService.getAllAuditoriums();
     }
 }
