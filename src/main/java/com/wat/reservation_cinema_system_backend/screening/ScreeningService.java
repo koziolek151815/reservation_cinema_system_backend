@@ -57,14 +57,15 @@ public class ScreeningService {
                 .screeningRequestDtoToEntity(screeningRequestDto, movieEntity, auditoriumEntity));
         return screeningFactory.entityToScreeningResponseDto(savedScreening);
     }
-    public List<MovieScreeningsDayDto> getMoviesScreeningsForDay(LocalDate date){
+
+    public List<MovieScreeningsDayDto> getMoviesScreeningsForDay(LocalDate date) {
         List<ScreeningEntity> screeningEntities = screeningRepository.findAll();
-        List<MovieEntity> dayMovies = screeningEntities.stream().filter(s -> isSameDay(s,date))
+        List<MovieEntity> dayMovies = screeningEntities.stream().filter(s -> isSameDay(s, date))
                 .map(ScreeningEntity::getMovie).distinct().collect(Collectors.toList());
         List<MovieScreeningsDayDto> moviesScreeningsDayDtoList = new ArrayList<>();
         dayMovies.forEach(m -> {
-            List<ScreeningResponseDto> screeningsMovieDay= m.getScreenings().stream().filter(s ->
-                    isSameDay(s,date)).map(screeningFactory::entityToScreeningResponseDto).collect(Collectors.toList());
+            List<ScreeningResponseDto> screeningsMovieDay = m.getScreenings().stream().filter(s ->
+                    isSameDay(s, date)).map(screeningFactory::entityToScreeningResponseDto).collect(Collectors.toList());
             MovieResponseDto movieResponseDto = movieFactory.entityToMovieResponseDto(m);
             moviesScreeningsDayDtoList.add(MovieScreeningsDayDto.builder()
                     .movie(movieResponseDto)
@@ -78,7 +79,7 @@ public class ScreeningService {
         return moviesScreeningsDayDtoList;
     }
 
-    public ScreeningWithAuditoriumResponseDto getScreeningWithAuditoriumById(Long screeningId){
+    public ScreeningWithAuditoriumResponseDto getScreeningWithAuditoriumById(Long screeningId) {
         ScreeningEntity screeningEntity = screeningRepository.findById(screeningId)
                 .orElseThrow(() -> new RuntimeException("Screening not found"));
         AuditoriumEntity auditoriumEntity = screeningEntity.getAuditorium();
@@ -88,7 +89,14 @@ public class ScreeningService {
                 .build();
     }
 
-    private boolean isSameDay(ScreeningEntity s, LocalDate date){
+    public List<ScreeningResponseDto> getScreeningsForDayAndAuditorium(LocalDate date, Long auditoriumId) {
+        List<ScreeningEntity> screeningEntities = screeningRepository.findAll();
+        return screeningEntities.stream()
+                .filter(s -> isSameDay(s, date)).filter(s -> s.getAuditorium().getAuditoriumId().equals(auditoriumId))
+                .map(screeningFactory::entityToScreeningResponseDto).collect(Collectors.toList());
+    }
+
+    private boolean isSameDay(ScreeningEntity s, LocalDate date) {
         return s.getStartScreening().getDayOfMonth() == date.getDayOfMonth() && s.getStartScreening().getMonth() == date.getMonth()
                 && s.getStartScreening().getYear() == date.getYear();
     }

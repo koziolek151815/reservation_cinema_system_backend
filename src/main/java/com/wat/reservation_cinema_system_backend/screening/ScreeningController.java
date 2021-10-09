@@ -16,20 +16,29 @@ import java.time.LocalDate;
 @RequestMapping("/screenings")
 public class ScreeningController {
     private final ScreeningService screeningService;
+
     @PostMapping
     @PreAuthorize("hasRole('admin')")
-    public ResponseEntity<?> addScreening(@RequestBody ScreeningRequestDto screeningRequestDto){
+    public ResponseEntity<?> addScreening(@RequestBody ScreeningRequestDto screeningRequestDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(screeningService.addScreening(screeningRequestDto));
     }
+
     @GetMapping
-    public ResponseEntity<?> getMoviesScreeningsForDay(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate date){
+    public ResponseEntity<?> getMoviesScreeningsForDay(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(screeningService.getMoviesScreeningsForDay(date));
     }
+
     @GetMapping("/{screeningId}")
-    public ResponseEntity<?> getScreeningWithAuditoriumById(@PathVariable Long screeningId){
+    public ResponseEntity<?> getScreeningWithAuditoriumById(@PathVariable Long screeningId) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(screeningService.getScreeningWithAuditoriumById(screeningId));
+    }
+
+    @GetMapping("/screeningDayAndAuditorium")
+    public ResponseEntity<?> getScreeningsByDayAndAuditorium(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @RequestParam("auditoriumId") Long auditoriumId) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(screeningService.getScreeningsForDayAndAuditorium(date,auditoriumId));
     }
 }
