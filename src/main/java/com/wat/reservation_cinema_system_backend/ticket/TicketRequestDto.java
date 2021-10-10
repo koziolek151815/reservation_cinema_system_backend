@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TicketRequestDto {
-    private Long seatId;
+    private Long auditoriumId;
     private Integer seatRow;
     private Integer seatNumber;
     private Long ticketTypeId;

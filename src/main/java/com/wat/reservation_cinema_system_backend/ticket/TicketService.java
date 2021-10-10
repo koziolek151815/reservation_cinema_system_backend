@@ -1,6 +1,10 @@
 package com.wat.reservation_cinema_system_backend.ticket;
 
+import com.wat.reservation_cinema_system_backend.auditorium.AuditoriumFactory;
+import com.wat.reservation_cinema_system_backend.auditorium.AuditoriumRepository;
+import com.wat.reservation_cinema_system_backend.auditorium.dto.AuditoriumResponseDto;
 import com.wat.reservation_cinema_system_backend.entities.*;
+import com.wat.reservation_cinema_system_backend.reservation.ReservationRepository;
 import com.wat.reservation_cinema_system_backend.screening.ScreeningRepository;
 import com.wat.reservation_cinema_system_backend.seat.SeatRepository;
 import com.wat.reservation_cinema_system_backend.ticketType.TicketTypeRepository;
@@ -21,6 +25,8 @@ public class TicketService {
     private final TicketRepository ticketRepository;
     private final UserService userService;
     private final SeatRepository seatRepository;
+    private final ReservationRepository reservationRepository;
+    private final AuditoriumRepository auditoriumRepository;
 
 
     public List<TicketResponseDto> getAllTicketsForScreening(Long screeningId) {
@@ -47,18 +53,29 @@ public class TicketService {
                 () -> new RuntimeException("Screening not found"));
         TicketTypeEntity ticketTypeEntity = ticketTypeRepository.findById(ticketRequestDto.getTicketTypeId()).orElseThrow(
                 () -> new RuntimeException("Ticket type not found"));
-        SeatEntity seatEntity = seatRepository.findById(ticketRequestDto.getSeatId()).orElseThrow(
-                () -> new RuntimeException("SeatNotFound"));
+        AuditoriumEntity auditoriumEntity = auditoriumRepository.findById(ticketRequestDto.getAuditoriumId()).orElseThrow(
+                () -> new RuntimeException("Auditorium not found"));
+        SeatEntity seatEntity = auditoriumEntity.getSeats().stream()
+                .filter(s-> s.getNumberSeat().equals(ticketRequestDto.getSeatNumber()) && s.getRowSeat().equals(ticketRequestDto.getSeatRow()))
+                .findFirst().orElseThrow(() -> new RuntimeException("Seat not found"));
 
-        if (checkIfTaken(seatEntity,screeningEntity)) {
+        if (checkIfTaken(seatEntity, screeningEntity)) {
             throw new RuntimeException("Seat is taken");
         }
 
         UserEntity currentUser = userService.getCurrentUser();
-        ReservationEntity currentReservation = currentUser.getReservations().stream().filter(
-                reservation -> !reservation.getMade()).findFirst().orElseThrow(() -> new RuntimeException("Reservation not found"));
-        ticketRepository.save(TicketEntity.builder()
+        ReservationEntity currentReservation = ReservationEntity.builder()
                 .made(false)
+                .paid(false)
+                .user(currentUser)
+                .screening(null)
+                .tickets(new ArrayList<>())
+                .build();
+
+        reservationRepository.save(currentReservation);
+
+        ticketRepository.save(TicketEntity.builder()
+                .made(true)
                 .paid(false)
                 .screening(screeningEntity)
                 .ticketTypeEntity(ticketTypeEntity)
@@ -68,7 +85,7 @@ public class TicketService {
     }
 
     private Boolean checkIfTaken(SeatEntity seatEntity, ScreeningEntity screeningEntity) {
-        Optional<TicketEntity> ticketToReserve = ticketRepository.findBySeatEqualsAndScreeningEquals(seatEntity,screeningEntity);
+        Optional<TicketEntity> ticketToReserve = ticketRepository.findBySeatEqualsAndScreeningEquals(seatEntity, screeningEntity);
         return ticketToReserve.isPresent();
     }
 }

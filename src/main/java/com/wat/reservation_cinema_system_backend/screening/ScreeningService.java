@@ -38,9 +38,8 @@ public class ScreeningService {
     }
 
     public ScreeningResponseDto addScreening(ScreeningRequestDto screeningRequestDto) {
-        // only for testing
-        screeningRequestDto.setStartScreening(LocalDateTime.now().minusHours(3));
-        screeningRequestDto.setEndScreening(LocalDateTime.now().minusHours(1));
+        screeningRequestDto.setStartScreening(screeningRequestDto.getStartScreening().plusHours(2));
+        screeningRequestDto.setEndScreening(screeningRequestDto.getEndScreening().plusHours(2));
 
         MovieEntity movieEntity = movieRepository.findById(screeningRequestDto.getMovieId()).
                 orElseThrow(() -> new RuntimeException("Movie not found"));
