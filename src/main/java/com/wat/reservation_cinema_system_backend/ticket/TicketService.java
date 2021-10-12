@@ -48,40 +48,43 @@ public class TicketService {
         return ticketsResponse;
     }
 
-    public void addTicketToReservation(Long screeningId, TicketRequestDto ticketRequestDto) {
-        ScreeningEntity screeningEntity = screeningRepository.findById(screeningId).orElseThrow(
-                () -> new RuntimeException("Screening not found"));
-        TicketTypeEntity ticketTypeEntity = ticketTypeRepository.findById(ticketRequestDto.getTicketTypeId()).orElseThrow(
-                () -> new RuntimeException("Ticket type not found"));
-        AuditoriumEntity auditoriumEntity = auditoriumRepository.findById(ticketRequestDto.getAuditoriumId()).orElseThrow(
-                () -> new RuntimeException("Auditorium not found"));
-        SeatEntity seatEntity = auditoriumEntity.getSeats().stream()
-                .filter(s-> s.getNumberSeat().equals(ticketRequestDto.getSeatNumber()) && s.getRowSeat().equals(ticketRequestDto.getSeatRow()))
-                .findFirst().orElseThrow(() -> new RuntimeException("Seat not found"));
+    public void addTicketToReservation(Long screeningId, TicketListRequestDto ticketListRequestDto) {
+        ticketListRequestDto.getTicketsList().forEach(ticketRequestDto -> {
+            ScreeningEntity screeningEntity = screeningRepository.findById(screeningId).orElseThrow(
+                    () -> new RuntimeException("Screening not found"));
+            TicketTypeEntity ticketTypeEntity = ticketTypeRepository.findById(ticketRequestDto.getTicketTypeId()).orElseThrow(
+                    () -> new RuntimeException("Ticket type not found"));
+            AuditoriumEntity auditoriumEntity = auditoriumRepository.findById(ticketRequestDto.getAuditoriumId()).orElseThrow(
+                    () -> new RuntimeException("Auditorium not found"));
+            SeatEntity seatEntity = auditoriumEntity.getSeats().stream()
+                    .filter(s -> s.getNumberSeat().equals(ticketRequestDto.getSeatNumber()) && s.getRowSeat().equals(ticketRequestDto.getSeatRow()))
+                    .findFirst().orElseThrow(() -> new RuntimeException("Seat not found"));
 
-        if (checkIfTaken(seatEntity, screeningEntity)) {
-            throw new RuntimeException("Seat is taken");
-        }
+            if (checkIfTaken(seatEntity, screeningEntity)) {
+                throw new RuntimeException("Seat is taken");
+            }
 
-        UserEntity currentUser = userService.getCurrentUser();
-        ReservationEntity currentReservation = ReservationEntity.builder()
-                .made(false)
-                .paid(false)
-                .user(currentUser)
-                .screening(null)
-                .tickets(new ArrayList<>())
-                .build();
+            UserEntity currentUser = userService.getCurrentUser();
+            ReservationEntity currentReservation = ReservationEntity.builder()
+                    .made(false)
+                    .paid(false)
+                    .user(currentUser)
+                    .screening(null)
+                    .tickets(new ArrayList<>())
+                    .build();
 
-        reservationRepository.save(currentReservation);
+            reservationRepository.save(currentReservation);
 
-        ticketRepository.save(TicketEntity.builder()
-                .made(true)
-                .paid(false)
-                .screening(screeningEntity)
-                .ticketTypeEntity(ticketTypeEntity)
-                .reservation(currentReservation)
-                .seat(seatEntity)
-                .build());
+            ticketRepository.save(TicketEntity.builder()
+                    .made(true)
+                    .paid(false)
+                    .screening(screeningEntity)
+                    .ticketTypeEntity(ticketTypeEntity)
+                    .reservation(currentReservation)
+                    .seat(seatEntity)
+                    .build());
+        });
+
     }
 
     private Boolean checkIfTaken(SeatEntity seatEntity, ScreeningEntity screeningEntity) {
