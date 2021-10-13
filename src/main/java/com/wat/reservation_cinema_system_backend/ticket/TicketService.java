@@ -49,6 +49,18 @@ public class TicketService {
     }
 
     public void addTicketToReservation(Long screeningId, TicketListRequestDto ticketListRequestDto) {
+        UserEntity currentUser = userService.getCurrentUser();
+        ScreeningEntity screening = screeningRepository.findById(screeningId).orElseThrow(
+                () -> new RuntimeException("Screening not found"));
+        ReservationEntity currentReservation = ReservationEntity.builder()
+                .made(true)
+                .paid(false)
+                .user(currentUser)
+                .screening(screening)
+                .tickets(new ArrayList<>())
+                .build();
+        reservationRepository.save(currentReservation);
+
         ticketListRequestDto.getTicketsList().forEach(ticketRequestDto -> {
             ScreeningEntity screeningEntity = screeningRepository.findById(screeningId).orElseThrow(
                     () -> new RuntimeException("Screening not found"));
@@ -63,17 +75,6 @@ public class TicketService {
             if (checkIfTaken(seatEntity, screeningEntity)) {
                 throw new RuntimeException("Seat is taken");
             }
-
-            UserEntity currentUser = userService.getCurrentUser();
-            ReservationEntity currentReservation = ReservationEntity.builder()
-                    .made(false)
-                    .paid(false)
-                    .user(currentUser)
-                    .screening(null)
-                    .tickets(new ArrayList<>())
-                    .build();
-
-            reservationRepository.save(currentReservation);
 
             ticketRepository.save(TicketEntity.builder()
                     .made(true)

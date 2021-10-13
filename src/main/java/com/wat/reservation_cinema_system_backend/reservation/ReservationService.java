@@ -50,4 +50,8 @@ public class ReservationService {
             ticketRepository.save(ticketEntity);
         });
     }
+    public List<ReservationResponseDto> getAllReservationsByUser(){
+        UserEntity currentUser = userService.getCurrentUser();
+return null;
+    }
 }
