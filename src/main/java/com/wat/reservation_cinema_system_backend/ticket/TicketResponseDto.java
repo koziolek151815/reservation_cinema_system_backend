@@ -15,6 +15,7 @@ public class TicketResponseDto {
     private Long reservationId;
     private Long screeningId;
     private Long ticketTypeId;
+    private String ticketTypeName;
     private Boolean made;
     private Boolean paid;
 }
