@@ -16,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ReservationInfoResponseDto {
     private Long reservationId;
+    private String userEmail;
     private String movie;
     private String auditoriumName;
     private LocalDateTime screeningDate;

@@ -30,4 +30,8 @@ public class ReservationController {
     public void cancelReservationByUser(@PathVariable Long reservationId){
         reservationService.cancelReservationByUser(reservationId);
     }
+    @GetMapping("/{screeningId}")
+    public List<ReservationInfoResponseDto> getReservationsForScreening(@PathVariable Long screeningId){
+        return reservationService.getReservationsForScreening(screeningId);
+    }
 }
