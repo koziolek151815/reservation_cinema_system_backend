@@ -25,4 +25,9 @@ public class ReservationController {
     public List<ReservationInfoResponseDto> getUserReservationsHistory(){
         return reservationService.getAllReservationsByUser();
     }
+
+    @DeleteMapping("/{reservationId}")
+    public void cancelReservationByUser(@PathVariable Long reservationId){
+        reservationService.cancelReservationByUser(reservationId);
+    }
 }

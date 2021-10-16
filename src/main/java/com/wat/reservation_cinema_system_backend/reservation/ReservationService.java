@@ -73,4 +73,10 @@ public class ReservationService {
                         .build()));
         return reservationInfoResponseDtoArrayList;
     }
+    public void cancelReservationByUser(Long reservationId){
+        UserEntity currentUser = userService.getCurrentUser();
+        ReservationEntity reservationToCancel = reservationRepository.findById(reservationId).orElseThrow(() -> new RuntimeException("Reservation not found"));
+        reservationToCancel.getTickets().forEach(ticketRepository::delete);
+        reservationRepository.delete(reservationToCancel);
+    }
 }
