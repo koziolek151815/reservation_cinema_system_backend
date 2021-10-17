@@ -77,13 +77,14 @@ public class ReservationService {
                         .build()));
         return reservationInfoResponseDtoArrayList;
     }
-    public void cancelReservationByUser(Long reservationId){
+
+    public void cancelReservationByUser(Long reservationId) {
         ReservationEntity reservationToCancel = reservationRepository.findById(reservationId).orElseThrow(() -> new RuntimeException("Reservation not found"));
         reservationToCancel.getTickets().forEach(ticketRepository::delete);
         reservationRepository.delete(reservationToCancel);
     }
 
-    public List<ReservationInfoResponseDto> getReservationsForScreening(Long screeningId){
+    public List<ReservationInfoResponseDto> getReservationsForScreening(Long screeningId) {
         ScreeningEntity screeningEntity = screeningRepository.findById(screeningId).orElseThrow(() -> new RuntimeException("Screening not found"));
         List<ReservationEntity> reservationEntities = reservationRepository.findAllByScreeningOrderByPaid(screeningEntity);
         ArrayList<ReservationInfoResponseDto> reservationInfoResponseDtoArrayList = new ArrayList<>();
@@ -91,7 +92,7 @@ public class ReservationService {
                 reservationInfoResponseDtoArrayList.add(ReservationInfoResponseDto.builder()
                         .reservationId(reservationEntity.getId())
                         .price(null)
-                        .userEmail(reservationEntity.getUser().getEmail())
+                        .userEmail(reservationEntity.getUser() != null ? reservationEntity.getUser().getEmail() : "Anonim")
                         .auditoriumName(reservationEntity.getScreening().getAuditorium().getName())
                         .screeningDate(reservationEntity.getScreening().getStartScreening())
                         .movie(reservationEntity.getScreening().getMovie().getTitle())
@@ -106,7 +107,7 @@ public class ReservationService {
         return reservationInfoResponseDtoArrayList;
     }
 
-    public void changeStatusOnPaid(Long reservationId){
+    public void changeStatusOnPaid(Long reservationId) {
         ReservationEntity reservationToUpdate = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new RuntimeException("Screening not found"));
         reservationToUpdate.setPaid(true);

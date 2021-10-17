@@ -19,4 +19,8 @@ public class TicketController {
     public void addTicketToReservation(@PathVariable Long screeningId, @RequestBody TicketListRequestDto ticketListRequestDto){
         ticketService.addTicketToReservation(screeningId,ticketListRequestDto);
     }
+    @PostMapping("/worker/{screeningId}")
+    public void addTicketToReservationWorker(@PathVariable Long screeningId, @RequestBody TicketListRequestDto ticketListRequestDto){
+        ticketService.addTicketToReservationWorker(screeningId,ticketListRequestDto);
+    }
 }

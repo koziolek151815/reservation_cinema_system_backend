@@ -92,4 +92,42 @@ public class TicketService {
         Optional<TicketEntity> ticketToReserve = ticketRepository.findBySeatEqualsAndScreeningEquals(seatEntity, screeningEntity);
         return ticketToReserve.isPresent();
     }
+    public void addTicketToReservationWorker(Long screeningId, TicketListRequestDto ticketListRequestDto) {
+        ScreeningEntity screening = screeningRepository.findById(screeningId).orElseThrow(
+                () -> new RuntimeException("Screening not found"));
+        ReservationEntity currentReservation = ReservationEntity.builder()
+                .made(true)
+                .paid(true)
+                .screening(screening)
+                .tickets(new ArrayList<>())
+                .build();
+        reservationRepository.save(currentReservation);
+
+        ticketListRequestDto.getTicketsList().forEach(ticketRequestDto -> {
+            ScreeningEntity screeningEntity = screeningRepository.findById(screeningId).orElseThrow(
+                    () -> new RuntimeException("Screening not found"));
+            TicketTypeEntity ticketTypeEntity = ticketTypeRepository.findById(ticketRequestDto.getTicketTypeId()).orElseThrow(
+                    () -> new RuntimeException("Ticket type not found"));
+            AuditoriumEntity auditoriumEntity = auditoriumRepository.findById(ticketRequestDto.getAuditoriumId()).orElseThrow(
+                    () -> new RuntimeException("Auditorium not found"));
+            SeatEntity seatEntity = auditoriumEntity.getSeats().stream()
+                    .filter(s -> s.getNumberSeat().equals(ticketRequestDto.getSeatNumber()) && s.getRowSeat().equals(ticketRequestDto.getSeatRow()))
+                    .findFirst().orElseThrow(() -> new RuntimeException("Seat not found"));
+
+            if (checkIfTaken(seatEntity, screeningEntity)) {
+                throw new RuntimeException("Seat is taken");
+            }
+
+            ticketRepository.save(TicketEntity.builder()
+                    .made(true)
+                    .paid(true)
+                    .screening(screeningEntity)
+                    .ticketTypeEntity(ticketTypeEntity)
+                    .reservation(currentReservation)
+                    .seat(seatEntity)
+                    .build());
+        });
+
+    }
+
 }
