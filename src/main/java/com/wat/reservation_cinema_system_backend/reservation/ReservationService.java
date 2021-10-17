@@ -11,6 +11,7 @@ import com.wat.reservation_cinema_system_backend.ticket.TicketService;
 import com.wat.reservation_cinema_system_backend.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,6 +104,13 @@ public class ReservationService {
                                 .build()).collect(Collectors.toList()))
                         .build()));
         return reservationInfoResponseDtoArrayList;
+    }
+
+    public void changeStatusOnPaid(Long reservationId){
+        ReservationEntity reservationToUpdate = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new RuntimeException("Screening not found"));
+        reservationToUpdate.setPaid(true);
+        reservationRepository.save(reservationToUpdate);
     }
 
 }

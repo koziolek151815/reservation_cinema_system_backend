@@ -20,6 +20,7 @@ public class MovieEntity {
     private String title;
     private String director;
     private String description;
+    private Integer duration;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private ImageEntity moviePhoto;
     @OneToMany(mappedBy="movie")

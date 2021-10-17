@@ -10,6 +10,7 @@ public class MovieFactory {
         return MovieResponseDto.builder()
                 .movieId(movieEntity.getMovieId())
                 .title(movieEntity.getTitle())
+                .duration(movieEntity.getDuration())
                 .director(movieEntity.getDirector())
                 .description(movieEntity.getDescription())
                 .moviePhotoName(movieEntity.getMoviePhoto()==null?null:movieEntity.getMoviePhoto().getOriginalFilename())

@@ -34,4 +34,8 @@ public class ReservationController {
     public List<ReservationInfoResponseDto> getReservationsForScreening(@PathVariable Long screeningId){
         return reservationService.getReservationsForScreening(screeningId);
     }
+    @PutMapping("/{reservationId}")
+    public void changeStatusOnPaid(@PathVariable Long reservationId){
+        reservationService.changeStatusOnPaid(reservationId);
+    }
 }

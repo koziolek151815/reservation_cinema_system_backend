@@ -15,4 +15,5 @@ public class MovieResponseDto {
     String director;
     String description;
     String moviePhotoName;
+    Integer duration;
 }
