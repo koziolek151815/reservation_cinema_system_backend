@@ -4,6 +4,7 @@ import com.wat.reservation_cinema_system_backend.auditorium.AuditoriumFactory;
 import com.wat.reservation_cinema_system_backend.auditorium.AuditoriumRepository;
 import com.wat.reservation_cinema_system_backend.auditorium.dto.AuditoriumResponseDto;
 import com.wat.reservation_cinema_system_backend.entities.*;
+import com.wat.reservation_cinema_system_backend.mail.MailService;
 import com.wat.reservation_cinema_system_backend.reservation.ReservationRepository;
 import com.wat.reservation_cinema_system_backend.screening.ScreeningRepository;
 import com.wat.reservation_cinema_system_backend.seat.SeatRepository;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +29,7 @@ public class TicketService {
     private final SeatRepository seatRepository;
     private final ReservationRepository reservationRepository;
     private final AuditoriumRepository auditoriumRepository;
+    private final MailService mailService;
 
 
     public List<TicketResponseDto> getAllTicketsForScreening(Long screeningId) {
@@ -48,7 +51,7 @@ public class TicketService {
         return ticketsResponse;
     }
 
-    public void addTicketToReservation(Long screeningId, TicketListRequestDto ticketListRequestDto) {
+    public void addTicketToReservation(Long screeningId, TicketListRequestDto ticketListRequestDto) throws MessagingException {
         UserEntity currentUser = userService.getCurrentUser();
         ScreeningEntity screening = screeningRepository.findById(screeningId).orElseThrow(
                 () -> new RuntimeException("Screening not found"));
@@ -85,7 +88,7 @@ public class TicketService {
                     .seat(seatEntity)
                     .build());
         });
-
+//mailService.sendMail(currentUser.getEmail(), "Rezerwacja","<b>Dokonałeś rezeracji na film "+ screening.getMovie().getTitle()+"</b><br>", true);
     }
 
     private Boolean checkIfTaken(SeatEntity seatEntity, ScreeningEntity screeningEntity) {

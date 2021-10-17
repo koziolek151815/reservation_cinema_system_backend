@@ -3,6 +3,7 @@ package com.wat.reservation_cinema_system_backend.ticket;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -16,7 +17,7 @@ public class TicketController {
         return ticketService.getAllTicketsForScreening(screeningId);
     }
     @PostMapping("/{screeningId}")
-    public void addTicketToReservation(@PathVariable Long screeningId, @RequestBody TicketListRequestDto ticketListRequestDto){
+    public void addTicketToReservation(@PathVariable Long screeningId, @RequestBody TicketListRequestDto ticketListRequestDto) throws MessagingException {
         ticketService.addTicketToReservation(screeningId,ticketListRequestDto);
     }
     @PostMapping("/worker/{screeningId}")
