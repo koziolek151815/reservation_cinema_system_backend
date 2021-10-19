@@ -1,6 +1,7 @@
 package com.wat.reservation_cinema_system_backend.ticket;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -20,6 +21,7 @@ public class TicketController {
     public void addTicketToReservation(@PathVariable Long screeningId, @RequestBody TicketListRequestDto ticketListRequestDto) throws MessagingException {
         ticketService.addTicketToReservation(screeningId,ticketListRequestDto);
     }
+    @PreAuthorize("hasRole('admin')")
     @PostMapping("/worker/{screeningId}")
     public void addTicketToReservationWorker(@PathVariable Long screeningId, @RequestBody TicketListRequestDto ticketListRequestDto){
         ticketService.addTicketToReservationWorker(screeningId,ticketListRequestDto);

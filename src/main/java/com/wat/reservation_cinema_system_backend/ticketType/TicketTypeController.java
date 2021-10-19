@@ -3,6 +3,7 @@ package com.wat.reservation_cinema_system_backend.ticketType;
 import com.wat.reservation_cinema_system_backend.ticket.TicketRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -17,11 +18,12 @@ public class TicketTypeController {
     public ResponseEntity<?> getAllTicketTypes() {
         return ResponseEntity.ok(ticketTypeService.getAllTicketTypes());
     }
-
+    @PreAuthorize("hasRole('admin')")
     @PostMapping
     public void addTicketType(@RequestBody TicketTypeRequestDto ticketTypeRequestDto) {
         ticketTypeService.addTicketType(ticketTypeRequestDto);
     }
+    @PreAuthorize("hasRole('admin')")
     @DeleteMapping("/{id}")
     public void deleteTicketType(@PathVariable Long id){
         ticketTypeRepository.deleteById(id);

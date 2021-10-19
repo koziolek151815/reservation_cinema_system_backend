@@ -1,6 +1,7 @@
 package com.wat.reservation_cinema_system_backend.reservation;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class ReservationController {
 //    public void makeReservation() {
 //        reservationService.makeReservation();
 //    }
+
     @GetMapping
     public List<ReservationInfoResponseDto> getUserReservationsHistory(){
         return reservationService.getAllReservationsByUser();
@@ -30,10 +32,12 @@ public class ReservationController {
     public void cancelReservationByUser(@PathVariable Long reservationId){
         reservationService.cancelReservationByUser(reservationId);
     }
+    @PreAuthorize("hasRole('admin')")
     @GetMapping("/{screeningId}")
     public List<ReservationInfoResponseDto> getReservationsForScreening(@PathVariable Long screeningId){
         return reservationService.getReservationsForScreening(screeningId);
     }
+    @PreAuthorize("hasRole('admin')")
     @PutMapping("/{reservationId}")
     public void changeStatusOnPaid(@PathVariable Long reservationId){
         reservationService.changeStatusOnPaid(reservationId);

@@ -24,7 +24,7 @@ public class ScreeningController {
                 .body(screeningService.addScreening(screeningRequestDto));
     }
 
-    @GetMapping
+    @GetMapping("/list")
     public ResponseEntity<?> getMoviesScreeningsForDay(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(screeningService.getMoviesScreeningsForDay(date));
@@ -35,7 +35,7 @@ public class ScreeningController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(screeningService.getScreeningWithAuditoriumById(screeningId));
     }
-
+    @PreAuthorize("hasRole('admin')")
     @GetMapping("/screeningDayAndAuditorium")
     public ResponseEntity<?> getScreeningsByDayAndAuditorium(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @RequestParam("auditoriumId") Long auditoriumId) {
         return ResponseEntity.status(HttpStatus.OK)
