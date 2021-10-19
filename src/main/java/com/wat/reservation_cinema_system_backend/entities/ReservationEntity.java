@@ -20,6 +20,7 @@ public class ReservationEntity {
     private UserEntity user;
     private Boolean made;
     private Boolean paid;
+    private Double price;
     @OneToMany(mappedBy="reservation")
     private List<TicketEntity> tickets= new ArrayList<>();
     @ManyToOne

@@ -58,6 +58,7 @@ public class TicketService {
         ReservationEntity currentReservation = ReservationEntity.builder()
                 .made(true)
                 .paid(false)
+                .price(ticketListRequestDto.getPrice())
                 .user(currentUser)
                 .screening(screening)
                 .tickets(new ArrayList<>())
@@ -95,17 +96,18 @@ public class TicketService {
         Optional<TicketEntity> ticketToReserve = ticketRepository.findBySeatEqualsAndScreeningEquals(seatEntity, screeningEntity);
         return ticketToReserve.isPresent();
     }
+
     public void addTicketToReservationWorker(Long screeningId, TicketListRequestDto ticketListRequestDto) {
         ScreeningEntity screening = screeningRepository.findById(screeningId).orElseThrow(
                 () -> new RuntimeException("Screening not found"));
         ReservationEntity currentReservation = ReservationEntity.builder()
                 .made(true)
                 .paid(true)
+                .price(ticketListRequestDto.getPrice())
                 .screening(screening)
                 .tickets(new ArrayList<>())
                 .build();
         reservationRepository.save(currentReservation);
-
         ticketListRequestDto.getTicketsList().forEach(ticketRequestDto -> {
             ScreeningEntity screeningEntity = screeningRepository.findById(screeningId).orElseThrow(
                     () -> new RuntimeException("Screening not found"));
@@ -130,7 +132,7 @@ public class TicketService {
                     .seat(seatEntity)
                     .build());
         });
-
     }
+
 
 }

@@ -11,4 +11,5 @@ import java.util.List;
 @AllArgsConstructor
 public class TicketListRequestDto {
     private List<TicketRequestDto> ticketsList;
+    private double price;
 }

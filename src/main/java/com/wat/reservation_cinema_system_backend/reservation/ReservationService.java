@@ -63,7 +63,7 @@ public class ReservationService {
         reservationEntities.forEach(reservationEntity ->
                 reservationInfoResponseDtoArrayList.add(ReservationInfoResponseDto.builder()
                         .reservationId(reservationEntity.getId())
-                        .price(null)
+                        .price(reservationEntity.getPrice())
                         .auditoriumName(reservationEntity.getScreening().getAuditorium().getName())
                         .screeningDate(reservationEntity.getScreening().getStartScreening())
                         .movie(reservationEntity.getScreening().getMovie().getTitle())
@@ -91,7 +91,7 @@ public class ReservationService {
         reservationEntities.forEach(reservationEntity ->
                 reservationInfoResponseDtoArrayList.add(ReservationInfoResponseDto.builder()
                         .reservationId(reservationEntity.getId())
-                        .price(null)
+                        .price(reservationEntity.getPrice())
                         .userEmail(reservationEntity.getUser() != null ? reservationEntity.getUser().getEmail() : "Anonim")
                         .auditoriumName(reservationEntity.getScreening().getAuditorium().getName())
                         .screeningDate(reservationEntity.getScreening().getStartScreening())
