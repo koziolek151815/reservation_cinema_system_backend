@@ -1,8 +1,12 @@
 package com.wat.reservation_cinema_system_backend.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wat.reservation_cinema_system_backend.screening.ScreeningController;
 import com.wat.reservation_cinema_system_backend.screening.ScreeningService;
 import com.wat.reservation_cinema_system_backend.screening.dto.MovieScreeningsDayDto;
+import com.wat.reservation_cinema_system_backend.screening.dto.ScreeningRequestDto;
+import com.wat.reservation_cinema_system_backend.screening.dto.ScreeningResponseDto;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +15,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -42,12 +48,34 @@ public class ExampleTest {
         List<MovieScreeningsDayDto> movieScreeningsDayDtoArrayList = new ArrayList<>();
 
 
-        given(screeningService.getMoviesScreeningsForDay(LocalDate.parse("2021-10-17"))).willReturn(movieScreeningsDayDtoArrayList);
+        when(screeningService.getMoviesScreeningsForDay(LocalDate.parse("2021-11-17"))).thenReturn(movieScreeningsDayDtoArrayList);
 
-        mvc.perform(get("/screenings").param("date", "2021-10-17")
+        mvc.perform(get("/screenings/list").param("date", "2021-11-17")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(jsonPath("$", hasSize(0)));
+    }
+
+    @Test
+    @WithMockUser(roles = {"admin"})
+    public void sdfsdf() throws Exception {
+        List<ScreeningResponseDto> screeningResponseDtoList = new ArrayList<>();
+        when(screeningService.getScreeningsForDayAndAuditorium(LocalDate.parse("2021-11-17"),1L)).thenReturn(screeningResponseDtoList);
+        mvc.perform(get("/screenings/screeningDayAndAuditorium").param("date", "2021-11-17").param("auditoriumId","1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+    @Test
+    @WithMockUser(roles = {"admin"})
+    public void asdf() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ScreeningRequestDto screeningRequestDto = new ScreeningRequestDto();
+        when(screeningService.addScreening(screeningRequestDto)).thenReturn(new ScreeningResponseDto());
+        mvc.perform(post("/screenings")
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(screeningRequestDto)))
+                .andExpect(status().isCreated());
     }
 }
