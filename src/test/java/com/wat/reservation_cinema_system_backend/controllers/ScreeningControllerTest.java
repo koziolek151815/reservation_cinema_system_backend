@@ -2,6 +2,7 @@ package com.wat.reservation_cinema_system_backend.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wat.reservation_cinema_system_backend.movie.dto.MovieResponseDto;
 import com.wat.reservation_cinema_system_backend.screening.ScreeningController;
 import com.wat.reservation_cinema_system_backend.screening.ScreeningService;
 import com.wat.reservation_cinema_system_backend.screening.dto.MovieScreeningsDayDto;
@@ -19,6 +20,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -26,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +60,7 @@ public class ScreeningControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"worker"})
+    @WithMockUser(roles = {"admin"})
     public void should_return_screenings_for_auditorium_for_worker() throws Exception {
         List<ScreeningResponseDto> screeningResponseDtoList = new ArrayList<>();
         when(screeningService.getScreeningsForDayAndAuditorium(LocalDate.parse("2021-11-17"), 1L))
@@ -72,11 +75,19 @@ public class ScreeningControllerTest {
     @WithMockUser(roles = {"admin"})
     public void should_add_screening_for_worker() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
-        ScreeningRequestDto screeningRequestDto = new ScreeningRequestDto();
-        when(screeningService.addScreening(screeningRequestDto)).thenReturn(new ScreeningResponseDto());
+        objectMapper.findAndRegisterModules();
+        ScreeningRequestDto screeningRequestDto = ScreeningRequestDto.builder()
+                .movieId(1L).auditoriumId(1L).startScreening(LocalDateTime.now().plusHours(4)).
+                endScreening(LocalDateTime.now().plusHours(6)).build();
+
+        ScreeningResponseDto screeningResponseDto = ScreeningResponseDto.builder()
+                .screeningId(1L).auditoriumId(1L).movieResponseDto(new MovieResponseDto()).build();
+
+        when(screeningService.addScreening(screeningRequestDto)).thenReturn(screeningResponseDto);
         mvc.perform(post("/screenings")
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(screeningRequestDto)))
+                .andExpect(jsonPath("$.screeningId", is(1)))
                 .andExpect(status().isCreated());
     }
 }
