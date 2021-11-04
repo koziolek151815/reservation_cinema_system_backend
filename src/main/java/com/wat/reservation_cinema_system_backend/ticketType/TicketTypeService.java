@@ -24,4 +24,13 @@ public class TicketTypeService {
                 .build();
         ticketTypeRepository.save(ticketTypeEntity);
     }
+    public TicketTypeEntity getTicketTypeById(Long ticketTypeId){
+        return ticketTypeRepository.findById(ticketTypeId).orElseThrow(() -> new RuntimeException("TicketType not found"));
+    }
+    public void updateTicketType(TicketTypeRequestDto ticketTypeRequestDto, Long ticketTypeId){
+        TicketTypeEntity ticketTypeEntity = getTicketTypeById(ticketTypeId);
+        ticketTypeEntity.setName(ticketTypeRequestDto.getName());
+        ticketTypeEntity.setPrice(ticketTypeEntity.getPrice());
+        ticketTypeRepository.save(ticketTypeEntity);
+    }
 }
