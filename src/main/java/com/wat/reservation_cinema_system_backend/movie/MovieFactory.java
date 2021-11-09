@@ -22,6 +22,7 @@ public class MovieFactory {
                 .director(movieRequestDto.getDirector())
                 .title(movieRequestDto.getTitle())
                 .moviePhoto(image)
+                .duration(movieRequestDto.getDuration())
                 .build();
     }
 }

@@ -14,5 +14,6 @@ public class MovieRequestDto {
     String title;
     String director;
     String description;
+    Integer duration;
     MultipartFile postPhoto;
 }
