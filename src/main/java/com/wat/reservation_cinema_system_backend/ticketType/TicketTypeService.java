@@ -30,7 +30,7 @@ public class TicketTypeService {
     public void updateTicketType(TicketTypeRequestDto ticketTypeRequestDto, Long ticketTypeId){
         TicketTypeEntity ticketTypeEntity = getTicketTypeById(ticketTypeId);
         ticketTypeEntity.setName(ticketTypeRequestDto.getName());
-        ticketTypeEntity.setPrice(ticketTypeEntity.getPrice());
+        ticketTypeEntity.setPrice(ticketTypeRequestDto.getPrice());
         ticketTypeRepository.save(ticketTypeEntity);
     }
 }
