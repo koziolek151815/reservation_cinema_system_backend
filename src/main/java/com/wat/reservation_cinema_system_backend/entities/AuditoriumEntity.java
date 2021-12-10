@@ -2,10 +2,7 @@ package com.wat.reservation_cinema_system_backend.entities;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +14,7 @@ import java.util.List;
 @Entity(name = "auditoriums")
 public class AuditoriumEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long auditoriumId;
     private String name;
     private Integer numberOfSeats;

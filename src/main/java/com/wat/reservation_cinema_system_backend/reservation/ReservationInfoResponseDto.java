@@ -18,7 +18,7 @@ public class ReservationInfoResponseDto {
     private Long reservationId;
     private String userEmail;
     private String movie;
-    private String auditoriumName;
+    private Long auditoriumId;
     private LocalDateTime screeningDate;
     private Boolean paid;
     private Double price;

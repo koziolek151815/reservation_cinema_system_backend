@@ -15,7 +15,7 @@ import java.util.List;
 @Entity(name = "screenings")
 public class ScreeningEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long screeningId;
     @ManyToOne
     @JoinColumn(name="movie_id")

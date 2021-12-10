@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Entity(name = "tickets")
 public class TicketEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long seatReservedId;
     @ManyToOne
     @JoinColumn(name="seat_id")

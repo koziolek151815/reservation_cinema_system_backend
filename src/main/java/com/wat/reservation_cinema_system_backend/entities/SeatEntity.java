@@ -16,7 +16,7 @@ import java.util.List;
 @Entity(name = "seats")
 public class SeatEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long seatId;
     private Integer rowSeat;
     private Integer numberSeat;

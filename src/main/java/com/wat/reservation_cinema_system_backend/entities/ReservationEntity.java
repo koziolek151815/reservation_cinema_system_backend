@@ -13,7 +13,7 @@ import java.util.List;
 @Entity(name = "reservations")
 public class ReservationEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
     @ManyToOne
     @JoinColumn(name="user_id")

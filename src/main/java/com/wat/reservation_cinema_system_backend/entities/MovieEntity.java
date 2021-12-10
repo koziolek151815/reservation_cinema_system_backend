@@ -15,7 +15,7 @@ import java.util.List;
 @Entity(name = "movies")
 public class MovieEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long movieId;
     private String title;
     private String director;
