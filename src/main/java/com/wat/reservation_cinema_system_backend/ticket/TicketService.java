@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.mail.MessagingException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -89,7 +90,7 @@ public class TicketService {
                     .seat(seatEntity)
                     .build());
         });
-//mailService.sendMail(currentUser.getEmail(), "Rezerwacja","<b>Dokonałeś rezeracji na film "+ screening.getMovie().getTitle()+"</b><br>", true);
+mailService.sendMail(currentUser.getEmail(), "Rezerwacja","<b>Dokonałeś rezerwacji na film "+ screening.getMovie().getTitle()+" " + formatDate(screening.getStartScreening())+ " Sala " + screening.getAuditorium().getAuditoriumId() +"</b><br>", true);
     }
 
     private Boolean checkIfTaken(SeatEntity seatEntity, ScreeningEntity screeningEntity) {
@@ -134,5 +135,13 @@ public class TicketService {
         });
     }
 
+    private String formatDate(LocalDateTime localDateTime){
+        String year = String.valueOf(localDateTime.getYear());
+        String month = String.valueOf(localDateTime.getMonthValue());
+        String day = String.valueOf(localDateTime.getDayOfMonth());
+        String hours = String.valueOf(localDateTime.getHour());
+        String minutes = String.valueOf(localDateTime.getMinute());
+        return day +"."+ month +"."+ year + " "+hours+":0"+ minutes;
+    }
 
 }

@@ -21,7 +21,7 @@ public class TicketController {
     public void addTicketToReservation(@PathVariable Long screeningId, @RequestBody TicketListRequestDto ticketListRequestDto) throws MessagingException {
         ticketService.addTicketToReservation(screeningId,ticketListRequestDto);
     }
-    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasRole('worker')")
     @PostMapping("/worker/{screeningId}")
     public void addTicketToReservationWorker(@PathVariable Long screeningId, @RequestBody TicketListRequestDto ticketListRequestDto){
         ticketService.addTicketToReservationWorker(screeningId,ticketListRequestDto);

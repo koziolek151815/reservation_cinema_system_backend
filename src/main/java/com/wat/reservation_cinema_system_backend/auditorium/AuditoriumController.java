@@ -16,13 +16,13 @@ public class AuditoriumController {
     private final AuditoriumService auditoriumService;
 
     @PostMapping
-    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasRole('worker')")
     public AuditoriumResponseDto addAuditoriumWithSeats(@RequestBody AuditoriumRequestDto auditoriumRequestDto) {
         return auditoriumService.addAuditoriumWithSeats(auditoriumRequestDto);
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasRole('worker')")
     public List<AuditoriumResponseDto> getAllAuditoriums(){
         return auditoriumService.getAllAuditoriums();
     }

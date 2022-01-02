@@ -18,7 +18,7 @@ public class ScreeningController {
     private final ScreeningService screeningService;
 
     @PostMapping
-    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasRole('worker')")
     public ResponseEntity<?> addScreening(@RequestBody ScreeningRequestDto screeningRequestDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(screeningService.addScreening(screeningRequestDto));
@@ -35,7 +35,7 @@ public class ScreeningController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(screeningService.getScreeningWithAuditoriumById(screeningId));
     }
-    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasRole('worker')")
     @GetMapping("/screeningDayAndAuditorium")
     public ResponseEntity<?> getScreeningsByDayAndAuditorium(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @RequestParam("auditoriumId") Long auditoriumId) {
         return ResponseEntity.status(HttpStatus.OK)

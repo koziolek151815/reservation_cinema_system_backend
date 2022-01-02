@@ -20,19 +20,19 @@ public class TicketTypeController {
         return ResponseEntity.ok(ticketTypeService.getAllTicketTypes());
     }
 
-    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasRole('worker')")
     @PostMapping
     public void addTicketType(@RequestBody TicketTypeRequestDto ticketTypeRequestDto) {
         ticketTypeService.addTicketType(ticketTypeRequestDto);
     }
 
-    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasRole('worker')")
     @GetMapping("/{ticketTypeId}")
     public TicketTypeEntity getTicketTypeById(@PathVariable Long ticketTypeId) {
         return ticketTypeService.getTicketTypeById(ticketTypeId);
     }
 
-    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasRole('worker')")
     @PutMapping("/{ticketTypeId}")
     public void updateTicketType(@RequestBody TicketTypeRequestDto ticketTypeRequestDto, @PathVariable Long ticketTypeId) {
         ticketTypeService.updateTicketType(ticketTypeRequestDto, ticketTypeId);

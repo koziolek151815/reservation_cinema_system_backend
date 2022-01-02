@@ -60,7 +60,7 @@ public class ScreeningControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"admin"})
+    @WithMockUser(roles = {"worker"})
     public void should_return_screenings_for_auditorium_for_worker() throws Exception {
         List<ScreeningResponseDto> screeningResponseDtoList = new ArrayList<>();
         when(screeningService.getScreeningsForDayAndAuditorium(LocalDate.parse("2021-11-17"), 1L))

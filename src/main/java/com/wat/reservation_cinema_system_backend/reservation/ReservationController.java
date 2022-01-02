@@ -32,12 +32,12 @@ public class ReservationController {
     public void cancelReservationByUser(@PathVariable Long reservationId){
         reservationService.cancelReservationByUser(reservationId);
     }
-    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasRole('worker')")
     @GetMapping("/{screeningId}")
     public List<ReservationInfoResponseDto> getReservationsForScreening(@PathVariable Long screeningId){
         return reservationService.getReservationsForScreening(screeningId);
     }
-    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasRole('worker')")
     @PutMapping("/{reservationId}")
     public void changeStatusOnPaid(@PathVariable Long reservationId){
         reservationService.changeStatusOnPaid(reservationId);

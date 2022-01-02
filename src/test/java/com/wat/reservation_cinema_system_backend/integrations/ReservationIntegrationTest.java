@@ -21,19 +21,19 @@ public class ReservationIntegrationTest {
     private MockMvc mockMvc;
 
     @Test
-    @WithMockUser(roles = {"admin"})
+    @WithMockUser(roles = {"worker"})
     public void should_get_reservations_for_screening_worker() throws Exception {
         this.mockMvc
-                .perform(get("/reservations/256"))
+                .perform(get("/reservations/1"))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
-                .andExpect(jsonPath("$", hasSize(3)));
+                .andExpect(jsonPath("$", hasSize(2)));
     }
     @Test
-    @WithMockUser(roles = {"admin"})
+    @WithMockUser(roles = {"worker"})
     public void should_change_status_on_paid_worker() throws Exception {
         this.mockMvc
-                .perform(put("/reservations/342"))
+                .perform(put("/reservations/1"))
                 .andDo(print()).andExpect(status().isOk());
     }
 

@@ -32,17 +32,17 @@ public class TicketIntegrationTest {
     private MockMvc mockMvc;
 
     @Test
-    @WithMockUser(roles = {"admin"})
+    @WithMockUser(roles = {"worker"})
     public void should_book_ticket_worker() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.findAndRegisterModules();
         List<TicketRequestDto> ticketsList = new ArrayList<>();
-        ticketsList.add(TicketRequestDto.builder().ticketTypeId(1L).auditoriumId(211L).seatNumber(1).seatRow(1).build());
+        ticketsList.add(TicketRequestDto.builder().ticketTypeId(1L).auditoriumId(1L).seatNumber(1).seatRow(1).build());
         TicketListRequestDto ticketListRequestDto = TicketListRequestDto
                 .builder().price(10.50).ticketsList(ticketsList)
                 .build();
 
-        this.mockMvc.perform(post("/tickets/worker/248")
+        this.mockMvc.perform(post("/tickets/worker/1")
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(ticketListRequestDto)))
                 .andExpect(status().is2xxSuccessful());

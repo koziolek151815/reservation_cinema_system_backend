@@ -27,11 +27,11 @@ public class RoleService {
     }
 
     public RoleEntity getAdminRole(){
-        Optional<RoleEntity> role = roleRepository.findRoleByName("admin");
+        Optional<RoleEntity> role = roleRepository.findRoleByName("worker");
         if(role.isPresent()) return role.get();
 
         RoleEntity newRole = RoleEntity.builder()
-                .name("admin")
+                .name("worker")
                 .description("test")
                 .build();
         roleRepository.save(newRole);
