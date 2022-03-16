@@ -37,7 +37,8 @@ public class ScreeningController {
     }
     @PreAuthorize("hasRole('worker')")
     @GetMapping("/screeningDayAndAuditorium")
-    public ResponseEntity<?> getScreeningsByDayAndAuditorium(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @RequestParam("auditoriumId") Long auditoriumId) {
+    public ResponseEntity<?> getScreeningsByDayAndAuditorium(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+                                                             @RequestParam("auditoriumId") Long auditoriumId) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(screeningService.getScreeningsForDayAndAuditorium(date,auditoriumId));
     }

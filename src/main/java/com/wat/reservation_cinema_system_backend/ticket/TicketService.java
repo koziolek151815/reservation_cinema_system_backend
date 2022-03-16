@@ -52,12 +52,11 @@ public class TicketService {
         return ticketsResponse;
     }
 
-    public void addTicketToReservation(Long screeningId, TicketListRequestDto ticketListRequestDto) throws MessagingException {
+    public void addTicketsToReservation(Long screeningId, TicketListRequestDto ticketListRequestDto) throws MessagingException {
         UserEntity currentUser = userService.getCurrentUser();
         ScreeningEntity screening = screeningRepository.findById(screeningId).orElseThrow(
                 () -> new RuntimeException("Screening not found"));
         ReservationEntity currentReservation = ReservationEntity.builder()
-                .made(true)
                 .paid(false)
                 .price(ticketListRequestDto.getPrice())
                 .user(currentUser)
@@ -82,15 +81,13 @@ public class TicketService {
             }
 
             ticketRepository.save(TicketEntity.builder()
-                    .made(true)
-                    .paid(false)
                     .screening(screeningEntity)
                     .ticketTypeEntity(ticketTypeEntity)
                     .reservation(currentReservation)
                     .seat(seatEntity)
                     .build());
         });
-mailService.sendMail(currentUser.getEmail(), "Rezerwacja","<b>Dokonałeś rezerwacji na film "+ screening.getMovie().getTitle()+" " + formatDate(screening.getStartScreening())+ " Sala " + screening.getAuditorium().getAuditoriumId() +"</b><br>", true);
+        mailService.sendMail(currentUser.getEmail(), "Rezerwacja","<b>Dokonałeś rezerwacji na film "+ screening.getMovie().getTitle()+" " + formatDate(screening.getStartScreening())+ " Sala " + screening.getAuditorium().getAuditoriumId() +"</b><br>", true);
     }
 
     private Boolean checkIfTaken(SeatEntity seatEntity, ScreeningEntity screeningEntity) {
@@ -98,7 +95,7 @@ mailService.sendMail(currentUser.getEmail(), "Rezerwacja","<b>Dokonałeś rezerw
         return ticketToReserve.isPresent();
     }
 
-    public void addTicketToReservationWorker(Long screeningId, TicketListRequestDto ticketListRequestDto) {
+    public void addTicketsToReservationWorker(Long screeningId, TicketListRequestDto ticketListRequestDto) {
         ScreeningEntity screening = screeningRepository.findById(screeningId).orElseThrow(
                 () -> new RuntimeException("Screening not found"));
         ReservationEntity currentReservation = ReservationEntity.builder()

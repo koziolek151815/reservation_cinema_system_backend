@@ -26,36 +26,6 @@ public class ReservationService {
     private final TicketRepository ticketRepository;
     private final ScreeningRepository screeningRepository;
 
-    //    public ReservationResponseDto getCurrentReservationOrCreate() {
-//        UserEntity currentUser = userService.getCurrentUser();
-//        Optional<ReservationEntity> currentReservation = reservationRepository.findByUserEqualsAndMadeFalse(currentUser);
-//        if (!currentReservation.isPresent()) {
-//            ReservationEntity reservationEntity = ReservationEntity.builder()
-//                    .made(false)
-//                    .paid(false)
-//                    .user(currentUser)
-//                    .screening(null)
-//                    .tickets(new ArrayList<>())
-//                    .build();
-//            reservationRepository.save(reservationEntity);
-//            return ReservationResponseDto.builder().reservationId(reservationEntity.getId()).build();
-//        }
-//        return ReservationResponseDto.builder().reservationId(currentReservation.get().getId()).build();
-//    }
-//
-//    public void makeReservation() {
-//        UserEntity currentUser = userService.getCurrentUser();
-//        ReservationEntity reservationToProcess = currentUser.getReservations().stream().filter(
-//                reservation -> !reservation.getMade()).findFirst().orElseThrow(() -> new RuntimeException("Reservation not found"));
-//        reservationToProcess.setMade(true);
-//        reservationRepository.save(reservationToProcess);
-//
-//        List<TicketEntity> ticketEntities = reservationToProcess.getTickets();
-//        ticketEntities.forEach(ticketEntity -> {
-//            ticketEntity.setMade(true);
-//            ticketRepository.save(ticketEntity);
-//        });
-//    }
     public List<ReservationInfoResponseDto> getAllReservationsByUser() {
         UserEntity currentUser = userService.getCurrentUser();
         List<ReservationEntity> reservationEntities = reservationRepository.findReservationsByUser(currentUser);
@@ -79,13 +49,15 @@ public class ReservationService {
     }
 
     public void cancelReservationByUser(Long reservationId) {
-        ReservationEntity reservationToCancel = reservationRepository.findById(reservationId).orElseThrow(() -> new RuntimeException("Reservation not found"));
+        ReservationEntity reservationToCancel = reservationRepository.findById(reservationId).orElseThrow(
+                () -> new RuntimeException("Reservation not found"));
         reservationToCancel.getTickets().forEach(ticketRepository::delete);
         reservationRepository.delete(reservationToCancel);
     }
 
     public List<ReservationInfoResponseDto> getReservationsForScreening(Long screeningId) {
-        ScreeningEntity screeningEntity = screeningRepository.findById(screeningId).orElseThrow(() -> new RuntimeException("Screening not found"));
+        ScreeningEntity screeningEntity = screeningRepository.findById(screeningId).orElseThrow(
+                () -> new RuntimeException("Screening not found"));
         List<ReservationEntity> reservationEntities = reservationRepository.findAllByScreeningOrderByPaid(screeningEntity);
         ArrayList<ReservationInfoResponseDto> reservationInfoResponseDtoArrayList = new ArrayList<>();
         reservationEntities.forEach(reservationEntity ->

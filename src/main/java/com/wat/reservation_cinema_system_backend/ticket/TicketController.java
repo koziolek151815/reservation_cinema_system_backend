@@ -18,12 +18,12 @@ public class TicketController {
         return ticketService.getAllTicketsForScreening(screeningId);
     }
     @PostMapping("/{screeningId}")
-    public void addTicketToReservation(@PathVariable Long screeningId, @RequestBody TicketListRequestDto ticketListRequestDto) throws MessagingException {
-        ticketService.addTicketToReservation(screeningId,ticketListRequestDto);
+    public void addTicketsToReservation(@PathVariable Long screeningId, @RequestBody TicketListRequestDto ticketListRequestDto) throws MessagingException {
+        ticketService.addTicketsToReservation(screeningId,ticketListRequestDto);
     }
     @PreAuthorize("hasRole('worker')")
     @PostMapping("/worker/{screeningId}")
-    public void addTicketToReservationWorker(@PathVariable Long screeningId, @RequestBody TicketListRequestDto ticketListRequestDto){
-        ticketService.addTicketToReservationWorker(screeningId,ticketListRequestDto);
+    public void addTicketsToReservationWorker(@PathVariable Long screeningId, @RequestBody TicketListRequestDto ticketListRequestDto){
+        ticketService.addTicketsToReservationWorker(screeningId,ticketListRequestDto);
     }
 }
